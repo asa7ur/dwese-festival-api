@@ -9,7 +9,6 @@ import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.mappers.ArtistMapper;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.repositories.ArtistRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,6 @@ public class ArtistService {
     private static final Logger logger = LoggerFactory.getLogger(ArtistService.class);
 
     private final ArtistRepository artistRepository;
-    private final MessageSource messageSource;
     private final ArtistMapper artistMapper;
     private final FileStorageService fileStorageService;
 
