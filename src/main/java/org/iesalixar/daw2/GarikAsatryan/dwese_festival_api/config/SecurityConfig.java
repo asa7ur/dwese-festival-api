@@ -84,9 +84,24 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/admin").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/artists").hasRole("MANAGER")
-                        .requestMatchers("/api/v1/authenticate", "/api/v1/register").permitAll()
+                        .requestMatchers(
+                                "/api/v1/admin",
+                                "/api/v1/users",
+                                "/api/v1/users/**",
+                                "/api/v1/tickets",
+                                "/api/v1/tickets/**").hasRole("ADMIN")
+                        .requestMatchers(
+                                "/api/v1/artists",
+                                "/api/v1/artists/**",
+                                "/api/v1/attendees",
+                                "/api/v1/attendees/**",
+                                "/api/v1/stages",
+                                "/api/v1/stages/**",
+                                "/api/v1/concerts",
+                                "/api/v1/concerts/**").hasRole("MANAGER")
+                        .requestMatchers(
+                                "/api/v1/authenticate",
+                                "/api/v1/register").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
