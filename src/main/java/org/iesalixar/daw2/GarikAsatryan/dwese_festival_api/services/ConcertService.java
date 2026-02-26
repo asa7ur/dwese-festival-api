@@ -4,9 +4,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.dtos.ConcertCreateDTO;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.dtos.ConcertDTO;
+import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.entities.Artist;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.entities.Concert;
+import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.entities.Stage;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.mappers.ConcertMapper;
+import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.repositories.ArtistRepository;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.repositories.ConcertRepository;
+import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.repositories.StageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -22,6 +26,8 @@ public class ConcertService {
 
     private final ConcertRepository concertRepository;
     private final ConcertMapper concertMapper;
+    private final ArtistRepository artistRepository;
+    private final StageRepository stageRepository;
 
     public Page<ConcertDTO> getAllConcerts(Pageable pageable) {
         logger.info("Solicitando todas los concerts con paginación: página {}, tamaño {}", pageable.getPageNumber(), pageable.getPageSize());
@@ -46,7 +52,15 @@ public class ConcertService {
     }
 
     public ConcertDTO createConcert(ConcertCreateDTO concertCreateDTO) {
+        Artist artist = artistRepository.findById(concertCreateDTO.getArtistId())
+                .orElseThrow(() -> new IllegalArgumentException("Artista no encontrado"));
+        Stage stage = stageRepository.findById(concertCreateDTO.getStageId())
+                .orElseThrow(() -> new IllegalArgumentException("Escenario no encontrado"));
+
         Concert concert = concertMapper.toEntity(concertCreateDTO);
+        concert.setArtist(artist);
+        concert.setStage(stage);
+
         Concert savedConcert = concertRepository.save(concert);
         logger.info("Concierto con ID {} creado con éxito", savedConcert.getId());
 
@@ -60,9 +74,16 @@ public class ConcertService {
         Concert existingConcert = concertRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Concert no encontrado"));
 
+        Artist artist = artistRepository.findById(concertCreateDTO.getArtistId())
+                .orElseThrow(() -> new IllegalArgumentException("Artista no encontrado"));
+
+        Stage stage = stageRepository.findById(concertCreateDTO.getStageId())
+                .orElseThrow(() -> new IllegalArgumentException("Escenario no encontrado"));
 
         existingConcert.setStartTime(concertCreateDTO.getStartTime());
         existingConcert.setEndTime(concertCreateDTO.getEndTime());
+        existingConcert.setArtist(artist);
+        existingConcert.setStage(stage);
 
         Concert updatedConcert = concertRepository.save(existingConcert);
         logger.info("Concierto con ID {} actualizado exitosamente.", updatedConcert.getId());

@@ -61,7 +61,7 @@ public class ConcertController {
 
     @PostMapping
     public ResponseEntity<?> createConcert(
-            @Valid @ModelAttribute ConcertCreateDTO concertCreateDTO
+            @Valid @RequestBody ConcertCreateDTO concertCreateDTO
     ) {
         try {
             ConcertDTO createdConcert = concertService.createConcert(concertCreateDTO);
