@@ -1,131 +1,112 @@
-INSERT IGNORE INTO regions (id, code, name)
-VALUES (1, '01', 'ANDALUCÍA'),
-       (2, '02', 'ARAGÓN'),
-       (3, '03', 'ASTURIAS'),
-       (4, '04', 'BALEARES'),
-       (5, '05', 'CANARIAS'),
-       (6, '06', 'CANTABRIA'),
-       (7, '07', 'CASTILLA Y LEÓN'),
-       (8, '08', 'CASTILLA-LA MANCHA'),
-       (9, '09', 'CATALUÑA'),
-       (10, '10', 'COMUNIDAD VALENCIANA'),
-       (11, '11', 'EXTREMADURA'),
-       (12, '12', 'GALICIA'),
-       (13, '13', 'MADRID'),
-       (14, '14', 'MURCIA'),
-       (15, '15', 'NAVARRA'),
-       (16, '16', 'PAÍS VASCO'),
-       (17, '17', 'LA RIOJA'),
-       (18, '18', 'CEUTA Y MELILLA');
+-- 1. ARTISTAS
+INSERT IGNORE INTO artists (name, genre, country)
+VALUES ('Gojira', 'Progressive Death Metal', 'France'), -- ID 1
+       ('Loathe', 'Metalcore', 'UK'),                   -- ID 2
+       ('Rammstein', 'Industrial Metal', 'Germany'),    -- ID 3
+       ('Faetooth', 'Doom Metal', 'USA'),               -- ID 4
+       ('Deftones', 'Alternative Metal', 'USA'),        -- ID 5
+       ('Behemoth', 'Blackened Death Metal', 'Poland'), -- ID 6
+       ('Fit For An Autopsy', 'Deathcore', 'USA'),      -- ID 7
+       ('Lorna Shore', 'Deathcore', 'USA'),             -- ID 8
+       ('Opeth', 'Progressive Metal', 'Sweden'),        -- ID 9
+       ('Jinjer', 'Progressive Metal', 'Ukraine'),      -- ID 10
+       ('Metallica', 'Thrash Metal', 'USA'),            -- ID 11
+       ('Mastodon', 'Progressive Metal', 'USA'),        -- ID 12
+       ('Evanescence', 'Nu Metal', 'USA'),              -- ID 13
+       ('Tool', 'Progressive Metal', 'USA'),            -- ID 14
+       ('Whitechapel', 'Deathcore', 'USA');
+-- ID 15
 
-INSERT IGNORE INTO provinces (id, code, name, region_id)
+-- 2. ESCENARIOS
+INSERT IGNORE INTO stages (name, capacity)
+VALUES ('Main Stage of Hell', 50000), -- ID 1
+       ('Purgatory Stage', 15000),    -- ID 2
+       ('The Abyss', 5000);
+-- ID 3
+
+-- 3. CONCIERTOS
+
+-- DÍA 1 (10 Julio): Rammstein cierra. Gojira sub-cabeza.
+INSERT IGNORE INTO concerts (start_time, end_time, artist_id, stage_id)
 VALUES
--- ANDALUCÍA (1)
-(1, '01', 'Almería', 1),
-(2, '02', 'Cádiz', 1),
-(3, '03', 'Córdoba', 1),
-(4, '04', 'Granada', 1),
-(5, '05', 'Huelva', 1),
-(6, '06', 'Jaén', 1),
-(7, '07', 'Málaga', 1),
-(8, '08', 'Sevilla', 1),
+    -- Escenario Pequeño (The Abyss)
+    ('2025-07-10 17:00:00', '2025-07-10 18:00:00', 2, 3),  -- Loathe
+    ('2025-07-10 18:30:00', '2025-07-10 19:30:00', 7, 3),  -- Fit For An Autopsy
 
--- ARAGÓN (2)
-(9, '09', 'Huesca', 2),
-(10, '10', 'Teruel', 2),
-(11, '11', 'Zaragoza', 2),
+    -- Escenario Mediano (Purgatory)
+    ('2025-07-10 19:00:00', '2025-07-10 20:30:00', 13, 2), -- Evanescence
+    ('2025-07-10 21:00:00', '2025-07-10 22:30:00', 10, 2), -- Jinjer
 
--- ASTURIAS (3)
-(12, '12', 'Asturias', 3),
+    -- Escenario Principal (Main)
+    ('2025-07-10 20:30:00', '2025-07-10 22:30:00', 1, 1),  -- Gojira (Telonero de lujo)
+    ('2025-07-10 23:00:00', '2025-07-11 01:00:00', 3, 1);
+-- Rammstein (Cierre)
 
--- BALEARES (4)
-(13, '13', 'Islas Baleares', 4),
+-- DÍA 2 (11 Julio): Metallica cierra. Deftones sub-cabeza.
+INSERT IGNORE INTO concerts (start_time, end_time, artist_id, stage_id)
+VALUES
+    -- Escenario Pequeño (The Abyss)
+    ('2025-07-11 17:00:00', '2025-07-11 18:00:00', 4, 3),  -- Faetooth
+    ('2025-07-11 18:30:00', '2025-07-11 19:30:00', 15, 3), -- Whitechapel
 
--- CANARIAS (5)
-(14, '14', 'Las Palmas', 5),
-(15, '15', 'Santa Cruz de Tenerife', 5),
+    -- Escenario Mediano (Purgatory)
+    ('2025-07-11 19:30:00', '2025-07-11 21:00:00', 12, 2), -- Mastodon
+    ('2025-07-11 21:30:00', '2025-07-11 23:00:00', 6, 2),  -- Behemoth
 
--- CANTABRIA (6)
-(16, '16', 'Cantabria', 6),
+    -- Escenario Principal (Main)
+    ('2025-07-11 20:30:00', '2025-07-11 22:30:00', 5, 1),  -- Deftones
+    ('2025-07-11 23:00:00', '2025-07-12 01:30:00', 11, 1);
+-- Metallica
 
--- CASTILLA Y LEÓN (7)
-(17, '17', 'Ávila', 7),
-(18, '18', 'Burgos', 7),
-(19, '19', 'León', 7),
-(20, '20', 'Palencia', 7),
-(21, '21', 'Salamanca', 7),
-(22, '22', 'Segovia', 7),
-(23, '23', 'Soria', 7),
-(24, '24', 'Valladolid', 7),
-(25, '25', 'Zamora', 7),
+-- DÍA 3 (12 Julio): Tool cierra. Opeth sub-cabeza.
+INSERT IGNORE INTO concerts (start_time, end_time, artist_id, stage_id)
+VALUES
+    -- Escenario Pequeño/Mediano (Purgatory día más fuerte)
+    ('2025-07-12 18:00:00', '2025-07-12 19:30:00', 8, 2), -- Lorna Shore (Purgatory)
 
--- CASTILLA-LA MANCHA (8)
-(26, '26', 'Albacete', 8),
-(27, '27', 'Ciudad Real', 8),
-(28, '28', 'Cuenca', 8),
-(29, '29', 'Guadalajara', 8),
-(30, '30', 'Toledo', 8),
+    -- Escenario Principal (Main)
+    ('2025-07-12 20:00:00', '2025-07-12 22:00:00', 9, 1), -- Opeth
+    ('2025-07-12 22:30:00', '2025-07-13 00:30:00', 14, 1);
+-- Tool
 
--- CATALUÑA (9)
-(31, '31', 'Barcelona', 9),
-(32, '32', 'Girona', 9),
-(33, '33', 'Lleida', 9),
-(34, '34', 'Tarragona', 9),
 
--- COMUNIDAD VALENCIANA (10)
-(35, '35', 'Alicante', 10),
-(36, '36', 'Castellón', 10),
-(37, '37', 'Valencia', 10),
+-- 4. ASISTENTES
+INSERT IGNORE INTO attendees (dni, name, phone, email)
+VALUES ('12345678A', 'Juan García', '600111222', 'juan.garcia@email.com'),
+       ('87654321B', 'María López', '600333444', 'maria.lopez@email.com'),
+       ('11223344C', 'Carlos Martínez', '600555666', 'carlos.mtz@email.com'),
+       ('44332211D', 'Laura Sánchez', '600777888', 'laura.sanchez@email.com'),
+       ('99887766E', 'Pedro Gómez', '600999000', 'pedro.gomez@email.com'),
+       ('55667788F', 'Ana Fernández', '611222333', 'ana.fernandez@email.com'),
+       ('22334455G', 'David Díaz', '622333444', 'david.diaz@email.com'),
+       ('66778899H', 'Lucía Pérez', '633444555', 'lucia.perez@email.com'),
+       ('77889900J', 'Javier Ruiz', '644555666', 'javier.ruiz@email.com'),
+       ('00112233K', 'Elena Jiménez', '655666777', 'elena.jimenez@email.com'),
+       ('33445566L', 'Sergio Moreno', '666777888', 'sergio.moreno@email.com'),
+       ('99001122M', 'Carmen Muñoz', '677888999', 'carmen.munoz@email.com'),
+       ('55443322N', 'Antonio Álvarez', '688999000', 'antonio.alvarez@email.com'),
+       ('11002299P', 'Isabel Romero', '699000111', 'isabel.romero@email.com'),
+       ('22113300Q', 'Miguel Navarro', '700111222', 'miguel.navarro@email.com');
 
--- EXTREMADURA (11)
-(38, '38', 'Badajoz', 11),
-(39, '39', 'Cáceres', 11),
-
--- GALICIA (12)
-(40, '40', 'A Coruña', 12),
-(41, '41', 'Lugo', 12),
-(42, '42', 'Ourense', 12),
-(43, '43', 'Pontevedra', 12),
-
--- MADRID (13)
-(44, '44', 'Madrid', 13),
-
--- MURCIA (14)
-(45, '45', 'Murcia', 14),
-
--- NAVARRA (15)
-(46, '46', 'Navarra', 15),
-
--- PAÍS VASCO (16)
-(47, '47', 'Álava', 16),
-(48, '48', 'Gipuzkoa', 16),
-(49, '49', 'Bizkaia', 16),
-
--- LA RIOJA (17)
-(50, '50', 'La Rioja', 17),
-
--- CEUTA Y MELILLA (18)
-(51, '51', 'Ceuta', 18),
-(52, '52', 'Melilla', 18);
-
-INSERT IGNORE INTO roles (id, name)
-VALUES (1, 'ROLE_ADMIN'),
-       (2, 'ROLE_MANAGER'),
-       (3, 'ROLE_USER');
-
-INSERT IGNORE INTO users (id, username, password, enabled, first_name, last_name, image, created_date,
-                          last_modified_date, last_password_change_date)
-VALUES (1, 'admin', '$2a$12$mTsYJAmrs9cQMpLEEOXk7ucbP8mkp5DuO5ehczmEC5/GrEgR61M8S', true, 'Admin', 'User',
-        '/images/admin.jpg', NOW(), NOW(), NOW()),
-       (2, 'manager', '$2a$12$UrjAduLzecRR/c2Ra.d1XeqUPl6iKmXP4CG3LMUaj3UCczUjKAzS2', true, 'Manager', 'User',
-        '/images/manager.jpg', NOW(), NOW(), NOW()),
-       (3, 'user', '$2a$12$GpkpIUojruYqAW.st0DeieSPs9/mbzouLAdHSa9O2YWd06TJzMdnu', true, 'Regular', 'User',
-        '/images/user.jpg', NOW(), NOW(), NOW()),
-       (4, 'asa7ur', '$2a$12$GpkpIUojruYqAW.st0DeieSPs9/mbzouLAdHSa9O2YWd06TJzMdnu', true, 'Garik', 'Asatryan',
-        '/images/user.jpg', NOW(), NOW(), NOW());
-
-INSERT IGNORE INTO user_roles (user_id, role_id)
-VALUES (1, 1),
-       (2, 2),
-       (3, 3),
-       (4, 3);
+-- 5. TICKETS
+INSERT IGNORE INTO tickets (price, type, is_used, attendee_id)
+VALUES (150.00, 'GENERAL', 1, 1),
+       (150.00, 'GENERAL', 1, 2),
+       (250.00, 'VIP', 0, 3),
+       (150.00, 'GENERAL', 1, 4),
+       (150.00, 'GENERAL', 1, 5),
+       (250.00, 'VIP', 1, 6),
+       (150.00, 'GENERAL', 0, 7),
+       (150.00, 'GENERAL', 1, 8),
+       (250.00, 'VIP', 0, 9),
+       (150.00, 'GENERAL', 1, 10),
+       (150.00, 'GENERAL', 0, 11),
+       (150.00, 'GENERAL', 1, 12),
+       (250.00, 'VIP', 1, 13),
+       (150.00, 'GENERAL', 0, 14),
+       (150.00, 'GENERAL', 1, 15),
+       (150.00, 'GENERAL', 0, 1),
+       (250.00, 'VIP', 1, 3),
+       (150.00, 'GENERAL', 1, 5),
+       (150.00, 'GENERAL', 0, 9),
+       (250.00, 'VIP', 0, 15);
