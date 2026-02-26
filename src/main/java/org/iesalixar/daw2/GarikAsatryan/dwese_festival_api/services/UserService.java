@@ -1,0 +1,30 @@
+package org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.services;
+
+import lombok.RequiredArgsConstructor;
+import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.dtos.UserDTO;
+import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.mappers.UserMapper;
+import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.repositories.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+
+    public Optional<UserDTO> getUserById(Long id) {
+        try {
+            logger.info("Buscando usuario con el ID {}", id);
+            return userRepository.findById(id).map(userMapper::toDTO);
+        } catch (Exception e) {
+            logger.error("Error al buscar usuario con ID {}: {}", id, e.getMessage());
+            throw new RuntimeException("Error al buscar el usuario.", e);
+        }
+    }
+}

@@ -4,6 +4,9 @@ DROP TABLE IF EXISTS stages;
 DROP TABLE IF EXISTS attendees;
 DROP TABLE IF EXISTS concerts;
 DROP TABLE IF EXISTS tickets;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS user_roles;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- Tabla Artists
@@ -55,4 +58,34 @@ CREATE TABLE IF NOT EXISTS tickets
     is_used     BIT(1)      NOT NULL,
     attendee_id BIGINT      NOT NULL,
     CONSTRAINT fk_ticket_attendee FOREIGN KEY (attendee_id) REFERENCES attendees (id)
+);
+
+CREATE TABLE users
+(
+    id                        BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username                  VARCHAR(50) UNIQUE NOT NULL,
+    password                  VARCHAR(100)       NOT NULL,
+    enabled                   BOOLEAN            NOT NULL,
+    first_name                VARCHAR(50)        NOT NULL,
+    last_name                 VARCHAR(50)        NOT NULL,
+    image                     VARCHAR(255),
+    created_date              TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_modified_date        TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE
+        CURRENT_TIMESTAMP,
+    last_password_change_date TIMESTAMP
+);
+
+CREATE TABLE roles
+(
+    id   BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user_roles
+(
+    user_id BIGINT NOT NULL,
+    role_id BIGINT NOT NULL,
+    PRIMARY KEY (user_id, role_id),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
 );
