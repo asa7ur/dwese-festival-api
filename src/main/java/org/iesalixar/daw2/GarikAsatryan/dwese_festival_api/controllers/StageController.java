@@ -62,7 +62,7 @@ public class StageController {
 
     @PostMapping
     public ResponseEntity<?> createStage(
-            @Valid @ModelAttribute StageCreateDTO stageCreateDTO,
+            @Valid @RequestBody StageCreateDTO stageCreateDTO,
             Locale locale
     ) {
         try {

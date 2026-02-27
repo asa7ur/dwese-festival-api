@@ -81,7 +81,7 @@ public class ArtistController {
         }
     }
 
-    @PostMapping(value = "/{id}", consumes = "multipart/form-data")
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public ResponseEntity<?> updateArtist(
             @PathVariable Long id,
             @Valid @ModelAttribute ArtistCreateDTO artistCreateDTO,

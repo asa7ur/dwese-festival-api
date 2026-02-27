@@ -62,7 +62,7 @@ public class AttendeeController {
 
     @PostMapping
     public ResponseEntity<?> createAttendee(
-            @Valid @ModelAttribute AttendeeCreateDTO attendeeCreateDTO,
+            @Valid @RequestBody AttendeeCreateDTO attendeeCreateDTO,
             Locale locale
     ) {
         try {

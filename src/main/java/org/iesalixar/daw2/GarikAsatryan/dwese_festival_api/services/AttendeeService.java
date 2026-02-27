@@ -68,7 +68,7 @@ public class AttendeeService {
         existingAttendee.setEmail(attendeeCreateDTO.getEmail());
 
         Attendee updatedAttendee = attendeeRepository.save(existingAttendee);
-        logger.info("Attendee cin ID {} actualizada exitosamente.", updatedAttendee.getId());
+        logger.info("Attendee con ID {} actualizada exitosamente.", updatedAttendee.getId());
 
         return attendeeMapper.toDTO(updatedAttendee);
     }
