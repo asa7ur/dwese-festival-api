@@ -26,7 +26,7 @@ public class ConcertController {
 
     @GetMapping
     public ResponseEntity<Page<ConcertDTO>> getAllConcerts(
-            @PageableDefault(size = 10, sort = "name") Pageable pageable
+            @PageableDefault(size = 10, sort = "id") Pageable pageable
     ) {
         logger.info("Solicitando todos los conciertos con paginación: página {}, tamaño {}",
                 pageable.getPageNumber(), pageable.getPageSize());

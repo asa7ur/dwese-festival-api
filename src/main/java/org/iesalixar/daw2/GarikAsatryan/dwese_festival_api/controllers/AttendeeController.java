@@ -27,7 +27,7 @@ public class AttendeeController {
 
     @GetMapping
     public ResponseEntity<Page<AttendeeDTO>> getAllAttendees(
-            @PageableDefault(size = 10, sort = "name") Pageable pageable
+            @PageableDefault(size = 10, sort = "id") Pageable pageable
     ) {
         logger.info("Solicitando todos los attendees con paginación: página {}, tamaño {}",
                 pageable.getPageNumber(), pageable.getPageSize());

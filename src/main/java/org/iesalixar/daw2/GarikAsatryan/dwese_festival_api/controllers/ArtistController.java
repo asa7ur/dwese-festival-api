@@ -27,7 +27,7 @@ public class ArtistController {
 
     @GetMapping
     public ResponseEntity<Page<ArtistDTO>> getAllArtists(
-            @PageableDefault(size = 10, sort = "name") Pageable pageable
+            @PageableDefault(size = 10, sort = "id") Pageable pageable
     ) {
         logger.info("Solicitando todos los artistas con paginación: página {}, tamaño {}",
                 pageable.getPageNumber(), pageable.getPageSize());
