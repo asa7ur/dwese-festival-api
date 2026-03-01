@@ -7,6 +7,7 @@ import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.dtos.ArtistDTO;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.entities.Artist;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.mappers.ArtistMapper;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.repositories.ArtistRepository;
+import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.repositories.ConcertRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -22,17 +23,22 @@ public class ArtistService {
     private static final Logger logger = LoggerFactory.getLogger(ArtistService.class);
 
     private final ArtistRepository artistRepository;
+    private final ConcertRepository concertRepository;
     private final ArtistMapper artistMapper;
     private final FileStorageService fileStorageService;
 
-    public Page<ArtistDTO> getAllArtists(Pageable pageable) {
-        logger.info("Solicitando todas los artistas con paginación: página {}, tamaño {}", pageable.getPageNumber(), pageable.getPageSize());
+    public Page<ArtistDTO> getAllArtists(Pageable pageable, String keyword) {
+        logger.info("Listando artistas. Keyword: {}, Paginación: {}", keyword, pageable);
         try {
-            Page<Artist> artistPage = artistRepository.findAll(pageable);
-            logger.info("Se han encontrado {} artistas en la página actual", artistPage.getTotalElements());
+            Page<Artist> artistPage;
+            if (keyword != null && !keyword.isEmpty()) {
+                artistPage = artistRepository.searchArtists(keyword, pageable);
+            } else {
+                artistPage = artistRepository.findAll(pageable);
+            }
             return artistPage.map(artistMapper::toDTO);
         } catch (Exception e) {
-            logger.error("Error al obtener todos los artistas: {}", e.getMessage());
+            logger.error("Error al obtener artistas: {}", e.getMessage());
             throw e;
         }
     }
@@ -92,17 +98,32 @@ public class ArtistService {
     }
 
     public void deleteArtist(Long id) {
-        logger.info("Buscando artista con ID {}", id);
-
         Artist artist = artistRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Artista no encontrado"));
 
-        if (artist.getImage() != null && !artist.getImage().isEmpty()) {
+        // Verificación de integridad referencial: No borrar si tiene conciertos
+        if (concertRepository.existsByArtistId(id)) {
+            logger.warn("Intento de borrar artista {} con conciertos asignados.", id);
+            throw new IllegalStateException("No se puede eliminar: el artista tiene conciertos programados.");
+        }
+
+        if (artist.getImage() != null) {
             fileStorageService.deleteFile(artist.getImage());
-            logger.info("Imagen asociada al artista con ID {} eliminada.", artist.getId());
         }
 
         artistRepository.deleteById(id);
-        logger.info("Artista con ID {} eliminada exitosamente.", id);
+        logger.info("Artista {} eliminado exitosamente.", id);
+    }
+
+    public void deleteArtistImage(Long id) {
+        Artist artist = artistRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Artista no encontrado"));
+
+        if (artist.getImage() != null) {
+            fileStorageService.deleteFile(artist.getImage());
+            artist.setImage(null);
+            artistRepository.save(artist);
+            logger.info("Imagen del artista {} eliminada.", id);
+        }
     }
 }
