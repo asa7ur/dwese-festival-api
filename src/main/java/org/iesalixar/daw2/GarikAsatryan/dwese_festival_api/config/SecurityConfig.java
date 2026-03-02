@@ -98,7 +98,9 @@ public class SecurityConfig {
                                 "/api/v1/stages",
                                 "/api/v1/stages/**",
                                 "/api/v1/concerts",
-                                "/api/v1/concerts/**").permitAll()
+                                "/api/v1/concerts/**",
+                                "/api/v1/images",
+                                "/api/v1/images/**").hasRole("MANAGER")
                         .requestMatchers(
                                 "/api/v1/authenticate",
                                 "/api/v1/register").permitAll()
