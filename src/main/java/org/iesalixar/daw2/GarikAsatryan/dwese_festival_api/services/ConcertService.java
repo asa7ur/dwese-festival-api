@@ -29,11 +29,15 @@ public class ConcertService {
     private final ArtistRepository artistRepository;
     private final StageRepository stageRepository;
 
-    public Page<ConcertDTO> getAllConcerts(Pageable pageable) {
-        logger.info("Solicitando todas los concerts con paginación: página {}, tamaño {}", pageable.getPageNumber(), pageable.getPageSize());
+    public Page<ConcertDTO> getAllConcerts(Pageable pageable, String keyword) {
+        logger.info("Listando conciertos. Keyword: {}, Paginación: {}", keyword, pageable);
         try {
-            Page<Concert> concertPage = concertRepository.findAll(pageable);
-            logger.info("Se han encontrado {} concerts en la página actual", concertPage.getTotalElements());
+            Page<Concert> concertPage;
+            if (keyword != null && !keyword.isEmpty()) {
+                concertPage = concertRepository.searchConcerts(keyword, pageable);
+            } else {
+                concertPage = concertRepository.findAll(pageable);
+            }
             return concertPage.map(concertMapper::toDTO);
         } catch (Exception e) {
             logger.error("Error al obtener todos los concerts: {}", e.getMessage());

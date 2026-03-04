@@ -26,13 +26,15 @@ public class ConcertController {
 
     @GetMapping
     public ResponseEntity<Page<ConcertDTO>> getAllConcerts(
+
+            @RequestParam(required = false) String keyword,
             @PageableDefault(size = 10, sort = "id") Pageable pageable
     ) {
         logger.info("Solicitando todos los conciertos con paginación: página {}, tamaño {}",
                 pageable.getPageNumber(), pageable.getPageSize());
 
         try {
-            Page<ConcertDTO> concerts = concertService.getAllConcerts(pageable);
+            Page<ConcertDTO> concerts = concertService.getAllConcerts(pageable, keyword);
             logger.info("Se han encontrado {} conciertos", concerts.getTotalElements());
             return ResponseEntity.ok(concerts);
         } catch (Exception e) {
