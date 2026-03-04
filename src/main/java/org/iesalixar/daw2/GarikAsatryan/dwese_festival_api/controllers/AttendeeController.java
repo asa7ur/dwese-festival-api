@@ -27,13 +27,14 @@ public class AttendeeController {
 
     @GetMapping
     public ResponseEntity<Page<AttendeeDTO>> getAllAttendees(
+            @RequestParam(required = false) String keyword,
             @PageableDefault(size = 10, sort = "id") Pageable pageable
     ) {
         logger.info("Solicitando todos los attendees con paginación: página {}, tamaño {}",
                 pageable.getPageNumber(), pageable.getPageSize());
 
         try {
-            Page<AttendeeDTO> attendees = attendeeService.getAllAttendees(pageable);
+            Page<AttendeeDTO> attendees = attendeeService.getAllAttendees(pageable, keyword);
             logger.info("Se han encontrado {} attendees", attendees.getTotalElements());
             return ResponseEntity.ok(attendees);
         } catch (Exception e) {

@@ -98,12 +98,12 @@ public class SecurityConfig {
                                 "/api/v1/stages",
                                 "/api/v1/stages/**",
                                 "/api/v1/concerts",
-                                "/api/v1/concerts/**",
-                                "/api/v1/images",
-                                "/api/v1/images/**").hasRole("MANAGER")
+                                "/api/v1/concerts/**").hasRole("MANAGER")
                         .requestMatchers(
                                 "/api/v1/authenticate",
-                                "/api/v1/register").permitAll()
+                                "/api/v1/register",
+                                "/api/v1/images",
+                                "/api/v1/images/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

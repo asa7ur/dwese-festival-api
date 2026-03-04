@@ -24,11 +24,15 @@ public class AttendeeService {
     private final AttendeeRepository attendeeRepository;
     private final AttendeeMapper attendeeMapper;
 
-    public Page<AttendeeDTO> getAllAttendees(Pageable pageable) {
-        logger.info("Solicitando todas los attendees con paginación: página {}, tamaño {}", pageable.getPageNumber(), pageable.getPageSize());
+    public Page<AttendeeDTO> getAllAttendees(Pageable pageable, String keyword) {
+        logger.info("Listando asistentes. Keyword: {}, Paginación: {}", keyword, pageable);
         try {
-            Page<Attendee> attendeePage = attendeeRepository.findAll(pageable);
-            logger.info("Se han encontrado {} attendees en la página actual", attendeePage.getTotalElements());
+            Page<Attendee> attendeePage;
+            if (keyword != null && !keyword.isEmpty()) {
+                attendeePage = attendeeRepository.searchAttendees(keyword, pageable);
+            } else {
+                attendeePage = attendeeRepository.findAll(pageable);
+            }
             return attendeePage.map(attendeeMapper::toDTO);
         } catch (Exception e) {
             logger.error("Error al obtener todos los attendees: {}", e.getMessage());
