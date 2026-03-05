@@ -26,13 +26,14 @@ public class TicketController {
 
     @GetMapping
     public ResponseEntity<Page<TicketDTO>> getAllTickets(
+            @RequestParam(required = false) String keyword,
             @PageableDefault(size = 10, sort = "id") Pageable pageable
     ) {
         logger.info("Solicitando todos los conciertos con paginación: página {}, tamaño {}",
                 pageable.getPageNumber(), pageable.getPageSize());
 
         try {
-            Page<TicketDTO> tickets = ticketService.getAllTickets(pageable);
+            Page<TicketDTO> tickets = ticketService.getAllTickets(pageable, keyword);
             logger.info("Se han encontrado {} conciertos", tickets.getTotalElements());
             return ResponseEntity.ok(tickets);
         } catch (Exception e) {

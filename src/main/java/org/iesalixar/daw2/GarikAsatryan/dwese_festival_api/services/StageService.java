@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.dtos.StageCreateDTO;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.dtos.StageDTO;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.entities.Stage;
+import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.entities.Ticket;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.mappers.StageMapper;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.repositories.StageRepository;
 import org.slf4j.Logger;
@@ -24,11 +25,15 @@ public class StageService {
     private final StageRepository stageRepository;
     private final StageMapper stageMapper;
 
-    public Page<StageDTO> getAllStages(Pageable pageable) {
-        logger.info("Solicitando todos los escenarios con paginación: página {}, tamaño {}", pageable.getPageNumber(), pageable.getPageSize());
+    public Page<StageDTO> getAllStages(Pageable pageable, String keyword) {
+        logger.info("Listando escenarios. Keyword: {}, Paginación: {}", keyword, pageable);
         try {
-            Page<Stage> stagePage = stageRepository.findAll(pageable);
-            logger.info("Se han encontrado {} sescenarios en la página actual", stagePage.getTotalElements());
+            Page<Stage> stagePage;
+            if (keyword != null && !keyword.isEmpty()) {
+                stagePage = stageRepository.searchStages(keyword, pageable);
+            } else {
+                stagePage = stageRepository.findAll(pageable);
+            }
             return stagePage.map(stageMapper::toDTO);
         } catch (Exception e) {
             logger.error("Error al obtener todos los escenarios: {}", e.getMessage());

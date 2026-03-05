@@ -27,13 +27,14 @@ public class StageController {
 
     @GetMapping
     public ResponseEntity<Page<StageDTO>> getAllStages(
+            @RequestParam(required = false) String keyword,
             @PageableDefault(size = 10, sort = "id") Pageable pageable
     ) {
         logger.info("Solicitando todos los escenarios con paginación: página {}, tamaño {}",
                 pageable.getPageNumber(), pageable.getPageSize());
 
         try {
-            Page<StageDTO> stages = stageService.getAllStages(pageable);
+            Page<StageDTO> stages = stageService.getAllStages(pageable, keyword);
             logger.info("Se han encontrado {} escenarios", stages.getTotalElements());
             return ResponseEntity.ok(stages);
         } catch (Exception e) {

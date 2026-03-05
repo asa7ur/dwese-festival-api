@@ -26,11 +26,15 @@ public class TicketService {
     private final TicketMapper ticketMapper;
     private final AttendeeRepository attendeeRepository;
 
-    public Page<TicketDTO> getAllTickets(Pageable pageable) {
-        logger.info("Solicitando todas los tickets con paginación: página {}, tamaño {}", pageable.getPageNumber(), pageable.getPageSize());
+    public Page<TicketDTO> getAllTickets(Pageable pageable, String keyword) {
+        logger.info("Listando entradas. Keyword: {}, Paginación: {}", keyword, pageable);
         try {
-            Page<Ticket> ticketPage = ticketRepository.findAll(pageable);
-            logger.info("Se han encontrado {} tickets en la página actual", ticketPage.getTotalElements());
+            Page<Ticket> ticketPage;
+            if (keyword != null && !keyword.isEmpty()) {
+                ticketPage = ticketRepository.searchTickets(keyword, pageable);
+            } else {
+                ticketPage = ticketRepository.findAll(pageable);
+            }
             return ticketPage.map(ticketMapper::toDTO);
         } catch (Exception e) {
             logger.error("Error al obtener todos los tickets: {}", e.getMessage());
