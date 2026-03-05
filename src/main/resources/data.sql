@@ -1,21 +1,20 @@
 -- 1. ARTISTAS
-INSERT IGNORE INTO artists (name, genre, country)
-VALUES ('Gojira', 'Progressive Death Metal', 'France'), -- ID 1
-       ('Loathe', 'Metalcore', 'UK'),                   -- ID 2
-       ('Rammstein', 'Industrial Metal', 'Germany'),    -- ID 3
-       ('Faetooth', 'Doom Metal', 'USA'),               -- ID 4
-       ('Deftones', 'Alternative Metal', 'USA'),        -- ID 5
-       ('Behemoth', 'Blackened Death Metal', 'Poland'), -- ID 6
-       ('Fit For An Autopsy', 'Deathcore', 'USA'),      -- ID 7
-       ('Lorna Shore', 'Deathcore', 'USA'),             -- ID 8
-       ('Opeth', 'Progressive Metal', 'Sweden'),        -- ID 9
-       ('Jinjer', 'Progressive Metal', 'Ukraine'),      -- ID 10
-       ('Metallica', 'Thrash Metal', 'USA'),            -- ID 11
-       ('Mastodon', 'Progressive Metal', 'USA'),        -- ID 12
-       ('Evanescence', 'Nu Metal', 'USA'),              -- ID 13
-       ('Tool', 'Progressive Metal', 'USA'),            -- ID 14
-       ('Whitechapel', 'Deathcore', 'USA');
--- ID 15
+INSERT IGNORE INTO artists (name, genre, country, image)
+VALUES ('Gojira', 'Progressive Death Metal', 'France', 'a442766e-0726-41fa-bf1a-ee8fa3c46f1b.jpg'),
+       ('Loathe', 'Metalcore', 'UK', '5d785915-02aa-482e-8f4f-348b599d03c3.jpg'),
+       ('Rammstein', 'Industrial Metal', 'Germany', 'd7fafd4f-0877-4682-b0fb-1957896f76a0.jpg'),
+       ('Faetooth', 'Doom Metal', 'USA', '3c3c40ac-ff35-44e0-b018-92857e4dc6b4.jpg'),
+       ('Deftones', 'Alternative Metal', 'USA', '5fdeb6e4-9ee6-4236-b1f7-034b39eb76c7.jpg'),
+       ('Behemoth', 'Blackened Death Metal', 'Poland', '62681927-bda2-4bc4-acef-e56c1f8cfb20.jpg'),
+       ('Fit For An Autopsy', 'Deathcore', 'USA', '6a94c2d2-7fcf-401e-944f-1d5d6165d757.jpg'),
+       ('Lorna Shore', 'Deathcore', 'USA', '587c1e00-5704-4e23-b1c5-e980191d81b1.jpg'),
+       ('Opeth', 'Progressive Metal', 'Sweden', 'bc1a747d-3e2e-4e7c-93e3-a70c1bf3b7f0.jpg'),
+       ('Jinjer', 'Progressive Metal', 'Ukraine', '062594f5-0bd7-4548-bea8-959fa89364b5.jpg'),
+       ('Metallica', 'Thrash Metal', 'USA', 'e0953cdc-a848-43c6-a02f-4a40f9875282.jpg'),
+       ('Mastodon', 'Progressive Metal', 'USA', '66b6cf22-1826-4120-8e7c-0254a2180a64.jpg'),
+       ('Evanescence', 'Nu Metal', 'USA', '615ad887-c6ae-4388-8e00-a50e1650fdfb.webp'),
+       ('Tool', 'Progressive Metal', 'USA', '1321c08f-bff0-4428-9033-72eefa9dc38c.jpg'),
+       ('Whitechapel', 'Deathcore', 'USA', '2c97a201-a77d-47df-b853-b2dc6fa4e472.jpg');
 
 -- 2. ESCENARIOS
 INSERT IGNORE INTO stages (name, capacity)
@@ -120,15 +119,12 @@ INSERT IGNORE INTO users (id, username, password, enabled, first_name, last_name
                           last_modified_date, last_password_change_date)
 VALUES (1, 'admin', '$2a$12$mTsYJAmrs9cQMpLEEOXk7ucbP8mkp5DuO5ehczmEC5/GrEgR61M8S', true, 'Admin', 'User',
         '/images/admin.jpg', NOW(), NOW(), NOW()),
-       (2, 'manager', '$2a$12$UrjAduLzecRR/c2Ra.d1XeqUPl6iKmXP4CG3LMUaj3UCczUjKAzS2', true, 'Manager', 'User',
+       (2, 'manager', '$2a$12$7N3vp6nZkEst.azVw.pBDOQ.4NlXrG3IH1Rm3Vu8fOyroS6N0oO1i', true, 'Manager', 'User',
         '/images/manager.jpg', NOW(), NOW(), NOW()),
-       (3, 'user', '$2a$12$GpkpIUojruYqAW.st0DeieSPs9/mbzouLAdHSa9O2YWd06TJzMdnu', true, 'Regular', 'User',
-        '/images/user.jpg', NOW(), NOW(), NOW()),
-       (4, 'asa7ur', '$2a$12$GpkpIUojruYqAW.st0DeieSPs9/mbzouLAdHSa9O2YWd06TJzMdnu', true, 'Garik', 'Asatryan',
+       (3, 'user', '$2a$12$q74pSPlUShwaCVvuV8FEk.0Ah2zBBuTM.nJHkXTpOEPn1CNKpaF7W', true, 'Regular', 'User',
         '/images/user.jpg', NOW(), NOW(), NOW());
 
 INSERT IGNORE INTO user_roles (user_id, role_id)
 VALUES (1, 1),
        (2, 2),
-       (3, 3),
-       (4, 3);
+       (3, 3);

@@ -7,6 +7,7 @@ import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.dtos.AttendeeDTO;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.entities.Attendee;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.mappers.AttendeeMapper;
 import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.repositories.AttendeeRepository;
+import org.iesalixar.daw2.GarikAsatryan.dwese_festival_api.repositories.TicketRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ public class AttendeeService {
 
     private final AttendeeRepository attendeeRepository;
     private final AttendeeMapper attendeeMapper;
+    private final TicketRepository ticketRepository;
 
     public Page<AttendeeDTO> getAllAttendees(Pageable pageable, String keyword) {
         logger.info("Listando asistentes. Keyword: {}, Paginación: {}", keyword, pageable);
@@ -82,6 +84,11 @@ public class AttendeeService {
 
         if (!attendeeRepository.existsById(id)) {
             throw new IllegalArgumentException("Attendee no encontrado.");
+        }
+
+        if (ticketRepository.existsByAttendeeId(id)) {
+            logger.warn("Intento de borrar attendee con ID {} que tiene tickets asociados", id);
+            throw new IllegalStateException("No se puede eliminar el asistente porque tiene entradas asociadas.");
         }
 
         attendeeRepository.deleteById(id);
